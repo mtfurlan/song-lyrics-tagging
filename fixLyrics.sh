@@ -2,6 +2,7 @@
 set -euo pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+
 tmpDir=/tmp/lyricsTmp
 
 underline () {
@@ -47,7 +48,7 @@ eval set -- "$TEMP"
 
 while true ; do
     case "$1" in
-        -h|--help) help; exit 0; shift ;;
+        -h|--help) help ;;
         --) shift ; break ;;
         *) die "issue parsing args, unexpected argument '$0'!" ;;
     esac
@@ -59,8 +60,6 @@ if [[ -z "$songPath" ]]; then
 fi
 
 msg "processiung '$songPath'"
-songFilename=$(basename -- "$songPath")
-songExtension="${songFilename##*.}"
 
 
 #exiftool -artist -album -title -lyrics -lyrics-xxx "$songPath"
@@ -87,11 +86,14 @@ vim -o2 -O $tmpDir/info $tmpDir/lyrics* -c "wincmd K" -c "resize 1"
 lyricsChoice=$(sind -o lyrics lyricsXXX lyricsWeb)
 echo "chose $lyricsChoice"
 
-tmpFile="tmpOutputSong.$songExtension"
-ffmpeg -i "$songPath" -y -acodec copy -metadata lyrics-XXX= "$tmpFile"
-mv "$tmpFile" "$songPath"
-ffmpeg -i "$songPath" -y -acodec copy -metadata lyrics="$(cat "$tmpDir/$lyricsChoice")" "$tmpFile"
-mv "$tmpFile" "$songPath"
+eyeD3 --add-lyrics "$tmpDir/$lyricsChoice"::eng "$songPath"
+#songFilename=$(basename -- "$songPath")
+#songExtension="${songFilename##*.}"
+#tmpFile="tmpOutputSong.$songExtension"
+#ffmpeg -i "$songPath" -y -acodec copy -metadata lyrics-XXX= "$tmpFile"
+#mv "$tmpFile" "$songPath"
+#ffmpeg -i "$songPath" -y -acodec copy -metadata lyrics="$(cat "$tmpDir/$lyricsChoice")" "$tmpFile"
+#mv "$tmpFile" "$songPath"
 #echo -e "$artist - $title:\nlyrics: $lyrics\n\nlyrics-xxx: $lyricsXXX\n\nlyricsWeb: $lyricsWeb"
 
 # show all tags:
@@ -99,5 +101,3 @@ mv "$tmpFile" "$songPath"
 #ffmpeg -i '03 - Roll the Bones.mp3' -f ffmetadata - 2>/dev/null
 #write/delete a tag
 #ffmpeg -i '03 - Roll the Bones.mp3' -y -acodec copy -metadata lyrics-XXX= 'output.mp3'
-
-

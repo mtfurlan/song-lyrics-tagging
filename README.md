@@ -1,9 +1,13 @@
 I want to have a script to fix lyrics on all my songs.
 
+Notes on lyrics tag
+* lyrics vs lyrics-xxx
+  * lyrics are supposed to have a language, xxx means unknown language
+  * A lot of tools will just call it lyrics if it's ENG
+  * Strawberry will default to eng over xxx
+* user-text-frame USLT
+  * Some people use this, not sure why: https://docs.puddletag.net/source/id3.html#field-unsyncedlyrics-frame-uslt
+
 Open issues
-* Why do some songs have lyrics-xxx *and* lyrics tags?
-* Can strawberry read lyrics or does it nead lyrics-xxx/lyrics-eng
-* Do I have any non-english lyrics?
-* What does strawberry do with multiple lyrics-xxx tags?
 * How does flac handle language?
-* how does mp3 handle language? I think it's just the first bit of the lyrics field?
+* Oops flac is broken cause eyeD3
